@@ -7,7 +7,7 @@ interface ImageUploaderProps {
   onImageLoad: (objectUrl: string) => void;
 }
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 export default function ImageUploader({ onImageLoad }: ImageUploaderProps) {
@@ -19,17 +19,14 @@ export default function ImageUploader({ onImageLoad }: ImageUploaderProps) {
   const handleFile = useCallback(
     (file: File) => {
       setError('');
-
       if (!ACCEPTED_TYPES.includes(file.type)) {
         setError('JPG, PNG, WebP only');
         return;
       }
-
       if (file.size > MAX_FILE_SIZE) {
         setError('Max 10MB');
         return;
       }
-
       const url = URL.createObjectURL(file);
       onImageLoad(url);
     },
@@ -56,17 +53,14 @@ export default function ImageUploader({ onImageLoad }: ImageUploaderProps) {
 
   return (
     <div
-      onDragOver={(e) => {
-        e.preventDefault();
-        setDragActive(true);
-      }}
+      onDragOver={(e) => { e.preventDefault(); setDragActive(true); }}
       onDragLeave={() => setDragActive(false)}
       onDrop={handleDrop}
       onClick={() => inputRef.current?.click()}
-      className={`cursor-pointer border-2 border-dashed rounded-2xl p-12 text-center transition-colors ${
+      className={`relative cursor-pointer rounded-3xl border-2 border-dashed transition-all duration-300 overflow-hidden group ${
         dragActive
-          ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5'
-          : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50'
+          ? 'border-violet-500/60 bg-violet-500/5 scale-[1.01]'
+          : 'border-white/[0.08] hover:border-white/[0.15] bg-white/[0.02]'
       }`}
     >
       <input
@@ -76,20 +70,46 @@ export default function ImageUploader({ onImageLoad }: ImageUploaderProps) {
         onChange={handleChange}
         className="hidden"
       />
-      <div className="text-5xl mb-4">📸</div>
-      <h3 className="text-lg font-semibold mb-2">{t('uploadTitle')}</h3>
-      <p className="text-sm text-[var(--color-text-secondary)] mb-4">
-        {t('uploadDesc')}
-      </p>
-      <span className="inline-block px-4 py-2 bg-[var(--color-primary)] text-white rounded-lg text-sm font-medium">
-        {t('uploadButton')}
-      </span>
-      <p className="text-xs text-[var(--color-text-secondary)] mt-3">
-        {t('supportedFormats')}
-      </p>
-      {error && (
-        <p className="text-red-500 text-sm mt-2">{error}</p>
-      )}
+
+      {/* Background decoration */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 rounded-full bg-violet-500/5 blur-3xl group-hover:bg-violet-500/8 transition-colors" />
+      </div>
+
+      <div className="relative px-6 py-16 sm:py-24 flex flex-col items-center">
+        {/* Puzzle grid hint icon */}
+        <div className="grid grid-cols-2 gap-1.5 mb-8 opacity-40 group-hover:opacity-60 transition-opacity">
+          <div className="w-8 h-8 rounded-lg bg-violet-500/20 border border-violet-500/10" />
+          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/10" />
+          <div className="w-8 h-8 rounded-lg bg-indigo-500/20 border border-indigo-500/10" />
+          <div className="w-8 h-8 rounded-lg bg-violet-400/20 border border-violet-400/10" />
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-bold text-zinc-100 mb-3 text-center">
+          {t('uploadTitle')}
+        </h3>
+
+        <p className="text-sm sm:text-base text-zinc-500 mb-8 text-center max-w-sm leading-relaxed">
+          {t('uploadDesc')}
+        </p>
+
+        <button
+          type="button"
+          className="btn-glow text-white font-semibold px-8 py-3.5 rounded-2xl text-base min-h-12"
+        >
+          {t('uploadButton')}
+        </button>
+
+        <p className="text-xs text-zinc-600 mt-6">
+          {t('supportedFormats')}
+        </p>
+
+        {error && (
+          <div className="mt-6 px-5 py-3 bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl text-sm font-medium">
+            {error}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -16,7 +16,7 @@ export default function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLocale}
-      className="px-3 py-1.5 text-sm font-medium rounded-full border border-[var(--color-border)] hover:bg-[var(--color-bg-secondary)] transition-colors"
+      className="px-3 py-1.5 text-sm font-medium rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-zinc-400 hover:text-zinc-200 border border-white/[0.06] transition-colors"
       aria-label="Switch language"
     >
       {locale === 'ko' ? 'EN' : '한국어'}

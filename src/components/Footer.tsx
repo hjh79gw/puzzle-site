@@ -7,55 +7,65 @@ export default function Footer() {
   const t = useTranslations();
 
   return (
-    <footer className="border-t border-[var(--color-border)] bg-[var(--color-bg-secondary)] mt-auto">
-      <div className="mx-auto max-w-6xl px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="bg-zinc-900/50 border-t border-white/[0.06]">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {/* Brand */}
           <div>
-            <h3 className="text-lg font-bold text-[var(--color-primary)] mb-2">
-              🧩 PuzzlePlay
-            </h3>
-            <p className="text-sm text-[var(--color-text-secondary)]">
+            <span className="text-lg font-bold gradient-text">PuzzlePlay</span>
+            <p className="mt-2 text-sm text-zinc-500 leading-relaxed">
               {t('Footer.tagline')}
             </p>
           </div>
+
+          {/* Game */}
           <div>
-            <h4 className="font-semibold mb-2">{t('Navigation.play')}</h4>
-            <ul className="space-y-1 text-sm text-[var(--color-text-secondary)]">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-4">
+              Game
+            </h4>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/play" className="hover:text-[var(--color-primary)]">
+                <Link href="/play" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
                   {t('Navigation.play')}
                 </Link>
               </li>
               <li>
-                <Link href="/how-to-play" className="hover:text-[var(--color-primary)]">
+                <Link href="/how-to-play" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
                   {t('Navigation.howToPlay')}
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
+                  {t('Navigation.about')}
                 </Link>
               </li>
             </ul>
           </div>
+
+          {/* Legal */}
           <div>
-            <h4 className="font-semibold mb-2">{t('Navigation.about')}</h4>
-            <ul className="space-y-1 text-sm text-[var(--color-text-secondary)]">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-zinc-600 mb-4">
+              Legal
+            </h4>
+            <ul className="space-y-2.5">
               <li>
-                <Link href="/about" className="hover:text-[var(--color-primary)]">
-                  {t('Navigation.about')}
-                </Link>
-              </li>
-              <li>
-                <Link href="/privacy" className="hover:text-[var(--color-primary)]">
+                <Link href="/privacy" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
                   {t('Navigation.privacy')}
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-[var(--color-primary)]">
+                <Link href="/terms" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
                   {t('Navigation.terms')}
                 </Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-4 border-t border-[var(--color-border)] text-center text-sm text-[var(--color-text-secondary)]">
-          {t('Footer.copyright')}
+
+        <div className="mt-10 pt-6 border-t border-white/[0.06] text-center">
+          <p className="text-xs text-zinc-600">
+            {t('Footer.copyright')}
+          </p>
         </div>
       </div>
     </footer>

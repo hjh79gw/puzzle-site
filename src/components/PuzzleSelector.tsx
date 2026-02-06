@@ -25,26 +25,26 @@ export default function PuzzleSelector({
     <div className="space-y-6">
       {/* Puzzle Type */}
       <div>
-        <label className="block text-sm font-medium mb-2">
+        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3">
           {t('puzzleType')}
         </label>
-        <div className="flex gap-3">
+        <div className="grid grid-cols-2 gap-3">
           <button
             onClick={() => onTypeChange('jigsaw')}
-            className={`flex-1 py-3 px-4 rounded-lg border-2 text-sm font-medium transition-colors ${
+            className={`py-3 px-4 rounded-xl text-sm font-medium min-h-12 transition-all duration-200 ${
               puzzleType === 'jigsaw'
-                ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50'
+                ? 'btn-glow text-white'
+                : 'bg-white/[0.03] border border-white/[0.06] text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]'
             }`}
           >
             🧩 {t('jigsaw')}
           </button>
           <button
             onClick={() => onTypeChange('slide')}
-            className={`flex-1 py-3 px-4 rounded-lg border-2 text-sm font-medium transition-colors ${
+            className={`py-3 px-4 rounded-xl text-sm font-medium min-h-12 transition-all duration-200 ${
               puzzleType === 'slide'
-                ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/10 text-[var(--color-primary)]'
-                : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50'
+                ? 'btn-glow text-white'
+                : 'bg-white/[0.03] border border-white/[0.06] text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.06]'
             }`}
           >
             🔀 {t('slide')}
@@ -54,27 +54,37 @@ export default function PuzzleSelector({
 
       {/* Grid Size */}
       <div>
-        <label className="block text-sm font-medium mb-2">
-          {t('gridSize')}: {gridSize}x{gridSize}
+        <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 mb-3">
+          {t('gridSize')}
         </label>
-        <input
-          type="range"
-          min={3}
-          max={8}
-          value={gridSize}
-          onChange={(e) => onGridSizeChange(Number(e.target.value))}
-          className="w-full accent-[var(--color-primary)]"
-        />
-        <div className="flex justify-between text-xs text-[var(--color-text-secondary)] mt-1">
-          <span>3x3</span>
-          <span>8x8</span>
+        <div className="bg-white/[0.03] rounded-xl p-5 border border-white/[0.06]">
+          <div className="text-center mb-3">
+            <span className="text-3xl font-bold text-zinc-100">
+              {gridSize}x{gridSize}
+            </span>
+            <span className="block text-xs text-zinc-500 mt-1">
+              {gridSize * gridSize} pieces
+            </span>
+          </div>
+          <input
+            type="range"
+            min={3}
+            max={8}
+            value={gridSize}
+            onChange={(e) => onGridSizeChange(Number(e.target.value))}
+            className="w-full h-2 rounded-full cursor-pointer"
+          />
+          <div className="flex justify-between text-xs text-zinc-600 mt-2">
+            <span>3x3 Easy</span>
+            <span>8x8 Hard</span>
+          </div>
         </div>
       </div>
 
       {/* Start */}
       <button
         onClick={onStart}
-        className="w-full py-3 bg-[var(--color-primary)] text-white rounded-lg font-semibold hover:bg-[var(--color-primary-dark)] transition-colors text-lg"
+        className="btn-glow w-full py-3.5 rounded-xl text-white font-semibold text-base min-h-12"
       >
         {t('startGame')}
       </button>

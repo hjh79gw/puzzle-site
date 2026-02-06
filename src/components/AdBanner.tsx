@@ -11,22 +11,22 @@ export default function AdBanner({
   format = 'auto',
   className = '',
 }: AdBannerProps) {
-  // Placeholder for Google AdSense
-  // Replace with actual ad code after AdSense approval
   return (
     <div
-      className={`flex items-center justify-center bg-[var(--color-bg-secondary)] border border-dashed border-[var(--color-border)] rounded-lg text-[var(--color-text-secondary)] text-xs ${className}`}
-      style={{ minHeight: format === 'horizontal' ? 90 : 250 }}
+      className={`glass-card border-dashed border-white/[0.06] flex items-center justify-center ${
+        format === 'horizontal' ? 'min-h-[90px]' : 'min-h-[250px]'
+      } ${className}`}
+      aria-hidden="true"
     >
-      <span>Ad Space</span>
+      <span className="text-zinc-700 text-xs">Ad</span>
       {/*
         After AdSense approval, replace this div with:
         <ins className="adsbygoogle"
-          style={{ display: 'block' }}
           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
           data-ad-slot={slot}
           data-ad-format={format}
           data-full-width-responsive="true" />
+        And add the AdSense script to layout.tsx <head>
       */}
     </div>
   );
