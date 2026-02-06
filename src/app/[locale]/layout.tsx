@@ -81,6 +81,7 @@ export default async function LocaleLayout({
         <meta name="theme-color" content="#09090b" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9131545638684988" crossOrigin="anonymous" />
         <JsonLd locale={locale} />
       </head>
       <body className={`${inter.className} min-h-screen grid grid-rows-[auto_1fr_auto] bg-[#09090b] text-zinc-100`}>
