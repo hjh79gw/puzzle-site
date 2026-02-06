@@ -47,10 +47,10 @@ export default async function HomePage({
                 </svg>
               </Link>
               <Link
-                href="/how-to-play"
+                href="/challenge"
                 className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-2xl text-base font-medium text-zinc-400 border border-white/[0.08] hover:bg-white/[0.03] hover:text-zinc-200 transition-all"
               >
-                {t('secondaryButton')}
+                {t('challengeButton')}
               </Link>
             </div>
 
