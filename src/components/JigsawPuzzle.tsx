@@ -83,7 +83,7 @@ export default function JigsawPuzzle({
     async function init() {
       const containerW = containerRef.current?.clientWidth ?? 900;
       const isMobile = containerW < 640;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
 
       const boardMaxSize = isMobile
         ? Math.floor((containerW - BOARD_PADDING * 2) * dpr)

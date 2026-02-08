@@ -355,7 +355,7 @@ function ChallengeSlidePuzzle({
     completedRef.current = false;
 
     async function init() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
       const maxSize = Math.min(
         ((containerRef.current?.clientWidth ?? 800) - 20) * dpr,
         1400

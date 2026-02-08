@@ -35,6 +35,8 @@ export function loadAndResizeImage(
       canvas.width = width;
       canvas.height = height;
       const ctx = canvas.getContext('2d')!;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, width, height);
       resolve(canvas);
     };
