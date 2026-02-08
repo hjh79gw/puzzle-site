@@ -35,7 +35,7 @@ export default async function HomePage({
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed mb-12 max-w-2xl mx-auto">
               {t('heroSub1')}
               <br />
-              {t('heroSub2')}
+              <span className="text-violet-400 font-semibold text-lg sm:text-xl lg:text-2xl">{t('heroSub2Highlight')}</span>{t('heroSub2Rest')}
             </p>
 
             <div className="relative z-20 flex flex-col sm:flex-row justify-center gap-4 mb-16">
