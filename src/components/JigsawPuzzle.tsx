@@ -432,17 +432,30 @@ export default function JigsawPuzzle({
         </div>
       </div>
 
-      {/* Puzzle canvas: Board left, Tray right */}
-      <canvas
-        ref={canvasRef}
-        width={canvasSize.w}
-        height={canvasSize.h}
-        onPointerDown={handlePointerDown}
-        onPointerMove={handlePointerMove}
-        onPointerUp={handlePointerUp}
-        className="w-full border border-white/[0.06] rounded-2xl touch-none cursor-grab active:cursor-grabbing"
-        style={{ aspectRatio: `${canvasSize.w} / ${canvasSize.h}` }}
-      />
+      {/* Puzzle canvas + Original image preview */}
+      <div className="flex flex-col lg:flex-row gap-4 items-start">
+        <canvas
+          ref={canvasRef}
+          width={canvasSize.w}
+          height={canvasSize.h}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          className="w-full border border-white/[0.06] rounded-2xl touch-none cursor-grab active:cursor-grabbing"
+          style={{ aspectRatio: `${canvasSize.w} / ${canvasSize.h}` }}
+        />
+
+        {/* Original image preview */}
+        <div className="lg:w-48 w-full lg:sticky lg:top-24 shrink-0">
+          <div className="glass-card p-3 rounded-xl">
+            <img
+              src={imageSrc}
+              alt="Original"
+              className="w-full rounded-lg border border-white/[0.06]"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
