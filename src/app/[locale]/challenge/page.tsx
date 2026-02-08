@@ -355,9 +355,10 @@ function ChallengeSlidePuzzle({
     completedRef.current = false;
 
     async function init() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const maxSize = Math.min(
-        (containerRef.current?.clientWidth ?? 800) - 20,
-        900
+        ((containerRef.current?.clientWidth ?? 800) - 20) * dpr,
+        1400
       );
       const canvas = await loadAndResizeImage(imageSrc, maxSize);
       if (cancelled) return;

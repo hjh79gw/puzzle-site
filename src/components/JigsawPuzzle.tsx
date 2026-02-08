@@ -83,10 +83,11 @@ export default function JigsawPuzzle({
     async function init() {
       const containerW = containerRef.current?.clientWidth ?? 900;
       const isMobile = containerW < 640;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
       const boardMaxSize = isMobile
-        ? containerW - BOARD_PADDING * 2
-        : Math.min(Math.floor(containerW * 0.75), 900);
+        ? Math.floor((containerW - BOARD_PADDING * 2) * dpr)
+        : Math.min(Math.floor(containerW * 0.75 * dpr), 1400);
 
       const imgCanvas = await loadAndResizeImage(imageSrc, boardMaxSize);
       if (cancelled) return;
