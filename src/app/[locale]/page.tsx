@@ -33,7 +33,9 @@ export default async function HomePage({
             </h1>
 
             <p className="text-base sm:text-lg lg:text-xl text-zinc-400 leading-relaxed mb-12 max-w-2xl mx-auto">
-              {t('heroSub')}
+              {t('heroSub1')}
+              <br />
+              {t('heroSub2')}
             </p>
 
             <div className="relative z-20 flex flex-col sm:flex-row justify-center gap-4 mb-16">
@@ -187,7 +189,7 @@ export default async function HomePage({
                   {step.num}
                 </div>
                 <h3 className="font-semibold text-zinc-100 text-lg mb-3">{step.title}</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed">{step.desc}</p>
+                <p className="text-sm text-zinc-500 leading-relaxed whitespace-nowrap">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -203,16 +205,27 @@ export default async function HomePage({
           <p className="text-lg text-zinc-400 mb-12">
             {t('ctaDesc')}
           </p>
-          <Link
-            href="/play"
-            className="btn-glow inline-flex items-center gap-2 text-white font-semibold text-lg px-12 py-4 rounded-2xl"
-          >
-            {t('startButton')}
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
-          <p className="mt-10 flex items-center justify-center gap-2 text-sm text-zinc-600">
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              href="/play"
+              className="btn-glow inline-flex items-center justify-center gap-2 text-white font-semibold text-lg px-12 py-4 rounded-2xl"
+            >
+              {t('startButton')}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+            <Link
+              href="/challenge"
+              className="inline-flex items-center justify-center gap-2 bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-300 font-semibold text-lg px-12 py-4 rounded-2xl transition-colors"
+            >
+              {t('challengeButton')}
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+          <p className="mt-10 flex items-center justify-center gap-2 text-sm text-zinc-600 whitespace-nowrap">
             <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
