@@ -102,6 +102,9 @@ export default async function HomePage({
         </div>
       </div>
 
+      {/* Ad #1 */}
+      <AdBanner format="horizontal" className="max-w-4xl mx-auto my-4 px-6" />
+
       {/* ===== FEATURES: Clean 2x2 Grid ===== */}
       <section className="relative py-24 sm:py-32 overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] rounded-full bg-violet-600/8 blur-[160px] pointer-events-none" />
@@ -165,7 +168,8 @@ export default async function HomePage({
         </div>
       </section>
 
-      <AdBanner format="horizontal" className="max-w-4xl mx-auto my-4" />
+      {/* Ad #2 */}
+      <AdBanner format="horizontal" className="max-w-4xl mx-auto my-4 px-6" />
 
       {/* ===== HOW IT WORKS: 3 steps ===== */}
       <section className="relative py-24 sm:py-32 overflow-hidden">
@@ -195,6 +199,9 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+
+      {/* Ad #3 */}
+      <AdBanner format="horizontal" className="max-w-4xl mx-auto my-4 px-6" />
 
       {/* ===== CTA + PRIVACY ===== */}
       <section className="py-24 sm:py-32 bg-gradient-to-b from-violet-950/20 via-violet-950/10 to-transparent">

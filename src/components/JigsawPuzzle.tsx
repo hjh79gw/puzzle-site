@@ -76,7 +76,7 @@ export default function JigsawPuzzle({
     async function init() {
       const containerW = containerRef.current?.clientWidth ?? 900;
       // Board takes ~60% of width, tray takes ~40%
-      const boardMaxSize = Math.min(Math.floor(containerW * 0.48), 560);
+      const boardMaxSize = Math.min(Math.floor(containerW * 0.75), 900);
       const imgCanvas = await loadAndResizeImage(imageSrc, boardMaxSize);
       if (cancelled) return;
 
@@ -92,7 +92,7 @@ export default function JigsawPuzzle({
       // Layout: [Board area] [Gap] [Tray area] side by side
       const boardAreaW = imgW + BOARD_PADDING * 2;
       const boardAreaH = imgH + BOARD_PADDING * 2;
-      const trayW = Math.max(pieceW * 4, 300);
+      const trayW = Math.max(pieceW * 4, 340);
       const totalW = boardAreaW + TRAY_GAP + trayW;
       const totalH = boardAreaH;
 

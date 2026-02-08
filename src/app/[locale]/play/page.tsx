@@ -104,7 +104,14 @@ export default function PlayPage() {
 
       {/* ===== PLAYING STATE: Centered game ===== */}
       {gameState === 'playing' && imageSrc && (
-        <div className="max-w-5xl mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-fade-in">
+        <div className="relative max-w-5xl mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-fade-in">
+          {/* Left vertical ad - sits in the left margin, desktop only */}
+          <div className="hidden xl:block absolute right-full mr-4 top-0">
+            <div className="sticky top-24">
+              <AdBanner format="vertical" className="w-[160px] min-h-[600px]" />
+            </div>
+          </div>
+
           <div className="flex items-center justify-center gap-4 mb-6">
             <h1 className="text-lg font-bold text-zinc-100">
               {puzzleType === 'jigsaw' ? t('jigsaw') : t('slide')} · {gridSize}x{gridSize}

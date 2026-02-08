@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import ChallengeComplete from '@/components/ChallengeComplete';
+import AdBanner from '@/components/AdBanner';
 import { formatTime } from '@/lib/puzzle-engine';
 
 type ChallengeState = 'select' | 'playing' | 'complete';
@@ -97,6 +98,12 @@ export default function ChallengePage() {
             </h1>
             <p className="text-zinc-400 text-base sm:text-lg">
               {t('subtitle')}
+            </p>
+            <p className="text-sm text-zinc-500 mt-3 flex items-center justify-center gap-1.5">
+              <svg className="w-4 h-4 text-violet-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              {t('weeklyNotice')}
             </p>
           </div>
 
@@ -234,7 +241,14 @@ export default function ChallengePage() {
 
       {/* PLAYING STATE */}
       {state === 'playing' && selectedImage && (
-        <div className="max-w-5xl mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-fade-in">
+        <div className="relative max-w-5xl mx-auto px-5 sm:px-8 py-6 sm:py-8 animate-fade-in">
+          {/* Left vertical ad - sits in the left margin, desktop only */}
+          <div className="hidden xl:block absolute right-full mr-4 top-0">
+            <div className="sticky top-24">
+              <AdBanner format="vertical" className="w-[160px] min-h-[600px]" />
+            </div>
+          </div>
+
           <div className="flex items-center justify-center gap-4 mb-6">
             <h1 className="text-lg font-bold text-zinc-100">
               {t('title')} · {t(selectedImage.labelKey)} · {gridSize}x{gridSize}
@@ -251,6 +265,7 @@ export default function ChallengePage() {
             gridSize={gridSize}
             onComplete={handleComplete}
           />
+          <AdBanner format="horizontal" className="mt-8 max-w-2xl mx-auto" />
         </div>
       )}
 
