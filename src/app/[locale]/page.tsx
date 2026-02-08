@@ -189,7 +189,7 @@ export default async function HomePage({
                   {step.num}
                 </div>
                 <h3 className="font-semibold text-zinc-100 text-lg mb-3">{step.title}</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed whitespace-nowrap">{step.desc}</p>
+                <p className={`text-sm text-zinc-500 leading-relaxed ${locale === 'ko' ? 'whitespace-nowrap' : ''}`}>{step.desc}</p>
               </div>
             ))}
           </div>
