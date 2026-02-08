@@ -87,7 +87,7 @@ export default async function LocaleLayout({
       <body className={`${inter.className} min-h-screen grid grid-rows-[auto_1fr_auto] bg-[#09090b] text-zinc-100`}>
         <NextIntlClientProvider messages={messages}>
           <Header />
-          <main className="w-full">{children}</main>
+          <main className="w-full overflow-x-hidden">{children}</main>
           <Footer />
         </NextIntlClientProvider>
       </body>

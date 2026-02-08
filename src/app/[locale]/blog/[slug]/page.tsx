@@ -90,6 +90,8 @@ export default async function BlogPostPage({
           })}
         </div>
 
+        <AdBanner format="horizontal" className="mt-12" />
+
         <div className="mt-16 pt-8 border-t border-white/[0.06] text-center">
           <Link
             href="/play"

@@ -57,6 +57,8 @@ export default async function BlogPage({
           </Link>
         ))}
       </div>
+
+      <AdBanner format="horizontal" className="mt-10" />
     </div>
   );
 }

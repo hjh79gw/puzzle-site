@@ -41,6 +41,13 @@ interface BoardInfo {
   pieceH: number;
 }
 
+interface TrayRect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
 const BOARD_PADDING = 24;
 const TRAY_GAP = 16;
 
@@ -56,7 +63,7 @@ export default function JigsawPuzzle({
   const [pieces, setPieces] = useState<JigsawPiece[]>([]);
   const [canvasSize, setCanvasSize] = useState({ w: 0, h: 0 });
   const [imageSize, setImageSize] = useState({ w: 0, h: 0 });
-  const [trayX, setTrayX] = useState(0);
+  const [trayRect, setTrayRect] = useState<TrayRect>({ x: 0, y: 0, w: 0, h: 0 });
   const [dragging, setDragging] = useState<number | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [moves, setMoves] = useState(0);
@@ -75,8 +82,12 @@ export default function JigsawPuzzle({
 
     async function init() {
       const containerW = containerRef.current?.clientWidth ?? 900;
-      // Board takes ~60% of width, tray takes ~40%
-      const boardMaxSize = Math.min(Math.floor(containerW * 0.75), 900);
+      const isMobile = containerW < 640;
+
+      const boardMaxSize = isMobile
+        ? containerW - BOARD_PADDING * 2
+        : Math.min(Math.floor(containerW * 0.75), 900);
+
       const imgCanvas = await loadAndResizeImage(imageSrc, boardMaxSize);
       if (cancelled) return;
 
@@ -89,23 +100,35 @@ export default function JigsawPuzzle({
       const pieceW = Math.floor(imgW / gridSize);
       const pieceH = Math.floor(imgH / gridSize);
 
-      // Layout: [Board area] [Gap] [Tray area] side by side
       const boardAreaW = imgW + BOARD_PADDING * 2;
       const boardAreaH = imgH + BOARD_PADDING * 2;
-      const trayW = Math.max(pieceW * 4, 340);
-      const totalW = boardAreaW + TRAY_GAP + trayW;
-      const totalH = boardAreaH;
+
+      let totalW: number;
+      let totalH: number;
+      let tray: TrayRect;
+
+      if (isMobile) {
+        // Vertical layout: board on top, tray on bottom
+        const trayH = Math.max(pieceH * 3, 250);
+        totalW = boardAreaW;
+        totalH = boardAreaH + TRAY_GAP + trayH;
+        tray = { x: 0, y: boardAreaH + TRAY_GAP, w: boardAreaW, h: trayH };
+      } else {
+        // Horizontal layout: board on left, tray on right
+        const trayW = Math.max(pieceW * 4, 340);
+        totalW = boardAreaW + TRAY_GAP + trayW;
+        totalH = boardAreaH;
+        tray = { x: boardAreaW + TRAY_GAP, y: 0, w: trayW, h: boardAreaH };
+      }
 
       setCanvasSize({ w: totalW, h: totalH });
-      setTrayX(boardAreaW + TRAY_GAP);
+      setTrayRect(tray);
 
       const allEdges: JigsawEdges[][] = generateJigsawEdges(gridSize, gridSize);
       setBoardInfo({ allEdges, pieceW, pieceH });
 
-      // Create pieces and scatter them in the tray area (right side)
+      // Create pieces and scatter them in the tray area
       const allPieces: JigsawPiece[] = [];
-      const trayStartX = boardAreaW + TRAY_GAP + 8;
-      const availTrayW = trayW - 16;
 
       for (let r = 0; r < gridSize; r++) {
         for (let c = 0; c < gridSize; c++) {
@@ -118,8 +141,8 @@ export default function JigsawPuzzle({
           const correctY = BOARD_PADDING + r * pieceH - offsetY;
 
           // Scatter in the tray area
-          const randX = trayStartX + Math.random() * Math.max(availTrayW - tw, 10);
-          const randY = 8 + Math.random() * Math.max(totalH - th - 16, 10);
+          const randX = tray.x + 8 + Math.random() * Math.max(tray.w - tw - 16, 10);
+          const randY = tray.y + 8 + Math.random() * Math.max(tray.h - th - 16, 10);
 
           allPieces.push({
             id: r * gridSize + c,
@@ -159,7 +182,7 @@ export default function JigsawPuzzle({
     ctx.fillStyle = '#18181b';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // ── Board area (left side) ──
+    // ── Board area ──
     if (boardInfo) {
       const { allEdges, pieceW, pieceH } = boardInfo;
 
@@ -208,16 +231,15 @@ export default function JigsawPuzzle({
       ctx.stroke();
     }
 
-    // ── Tray area (right side) ──
-    const trayW = canvasSize.w - trayX;
+    // ── Tray area ──
     ctx.fillStyle = '#16161a';
     ctx.beginPath();
-    ctx.roundRect(trayX, 4, trayW - 4, canvasSize.h - 8, 10);
+    ctx.roundRect(trayRect.x + 4, trayRect.y + 4, trayRect.w - 8, trayRect.h - 8, 10);
     ctx.fill();
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.roundRect(trayX, 4, trayW - 4, canvasSize.h - 8, 10);
+    ctx.roundRect(trayRect.x + 4, trayRect.y + 4, trayRect.w - 8, trayRect.h - 8, 10);
     ctx.stroke();
 
     // Ghost hint
@@ -257,7 +279,7 @@ export default function JigsawPuzzle({
 
       ctx.restore();
     }
-  }, [pieces, imageSize, canvasSize, trayX, dragging, showHint, originalCanvas, boardInfo, gridSize]);
+  }, [pieces, imageSize, canvasSize, trayRect, dragging, showHint, originalCanvas, boardInfo, gridSize]);
 
   useEffect(() => {
     draw();
@@ -351,12 +373,10 @@ export default function JigsawPuzzle({
         // If piece is out of canvas bounds, bring it back to tray
         if (p.currentX < 0 || p.currentX > canvasSize.w - 10 ||
             p.currentY < 0 || p.currentY > canvasSize.h - 10) {
-          const trayStartX = trayX + 8;
-          const availTrayW = canvasSize.w - trayX - 16;
           return {
             ...p,
-            currentX: trayStartX + Math.random() * Math.max(availTrayW - p.totalW, 10),
-            currentY: 8 + Math.random() * Math.max(canvasSize.h - p.totalH - 16, 10),
+            currentX: trayRect.x + 8 + Math.random() * Math.max(trayRect.w - p.totalW - 16, 10),
+            currentY: trayRect.y + 8 + Math.random() * Math.max(trayRect.h - p.totalH - 16, 10),
           };
         }
 
@@ -370,15 +390,12 @@ export default function JigsawPuzzle({
 
   // ── Reset / Shuffle ────────────────────────────────────────────────────────
   const handleReset = () => {
-    const trayStartX = trayX + 8;
-    const availTrayW = canvasSize.w - trayX - 16;
-
     setPieces((prev) =>
       shuffleArray(
         prev.map((p) => ({
           ...p,
-          currentX: trayStartX + Math.random() * Math.max(availTrayW - p.totalW, 10),
-          currentY: 8 + Math.random() * Math.max(canvasSize.h - p.totalH - 16, 10),
+          currentX: trayRect.x + 8 + Math.random() * Math.max(trayRect.w - p.totalW - 16, 10),
+          currentY: trayRect.y + 8 + Math.random() * Math.max(trayRect.h - p.totalH - 16, 10),
           placed: false,
         }))
       )
@@ -446,8 +463,8 @@ export default function JigsawPuzzle({
         />
 
         {/* Original image preview */}
-        <div className="lg:w-48 w-full lg:sticky lg:top-24 shrink-0">
-          <div className="glass-card p-3 rounded-xl">
+        <div className="w-24 lg:w-48 lg:sticky lg:top-24 shrink-0">
+          <div className="glass-card p-2 lg:p-3 rounded-xl">
             <img
               src={imageSrc}
               alt="Original"
