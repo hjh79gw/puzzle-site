@@ -3,6 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { useState, useCallback, useRef, useEffect } from 'react';
 import ChallengeComplete from '@/components/ChallengeComplete';
+import { formatTime } from '@/lib/puzzle-engine';
 
 type ChallengeState = 'select' | 'playing' | 'complete';
 type GridSize = 3 | 4 | 5;
@@ -33,6 +34,9 @@ export default function ChallengePage() {
   const [selectedImage, setSelectedImage] = useState<ChallengeImage | null>(null);
   const [gridSize, setGridSize] = useState<GridSize>(3);
   const [completionData, setCompletionData] = useState<{ time: number; moves: number } | null>(null);
+  const [showRanking, setShowRanking] = useState(false);
+  const [rankings, setRankings] = useState<{ nickname: string; time: number; moves: number; date: string }[]>([]);
+  const [rankingLoading, setRankingLoading] = useState(false);
 
   const handleStartChallenge = useCallback(() => {
     if (!selectedImage) return;
@@ -53,6 +57,32 @@ export default function ChallengePage() {
     setCompletionData(null);
     setState('select');
   }, []);
+
+  const fetchRankings = useCallback(async (imageId: string, size: number) => {
+    setRankingLoading(true);
+    try {
+      const res = await fetch(`/api/leaderboard?imageId=${imageId}&gridSize=${size}`);
+      const data = await res.json();
+      setRankings((data.entries || []).slice(0, 10));
+    } catch {
+      setRankings([]);
+    }
+    setRankingLoading(false);
+  }, []);
+
+  const handleToggleRanking = useCallback(() => {
+    if (!showRanking && selectedImage) {
+      fetchRankings(selectedImage.id, gridSize);
+    }
+    setShowRanking((prev) => !prev);
+  }, [showRanking, selectedImage, gridSize, fetchRankings]);
+
+  // 이미지나 난이도 변경 시 랭킹 열려있으면 갱신
+  useEffect(() => {
+    if (showRanking && selectedImage) {
+      fetchRankings(selectedImage.id, gridSize);
+    }
+  }, [selectedImage, gridSize, showRanking, fetchRankings]);
 
   return (
     <div className="relative min-h-[calc(100vh-4rem)] overflow-hidden">
@@ -131,18 +161,73 @@ export default function ChallengePage() {
             </div>
           </div>
 
-          {/* Start Button */}
-          <div className="text-center">
-            <button
-              onClick={handleStartChallenge}
-              disabled={!selectedImage}
-              className="btn-glow inline-flex items-center gap-2 text-white font-semibold px-10 py-4 rounded-2xl text-base sm:text-lg disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {t('startChallenge')}
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
+          {/* Start Button + View Ranking */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="flex gap-3">
+              <button
+                onClick={handleStartChallenge}
+                disabled={!selectedImage}
+                className="btn-glow inline-flex items-center gap-2 text-white font-semibold px-10 py-4 rounded-2xl text-base sm:text-lg disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                {t('startChallenge')}
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </button>
+              <button
+                onClick={handleToggleRanking}
+                disabled={!selectedImage}
+                className="inline-flex items-center gap-2 bg-white/[0.05] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-300 font-semibold px-6 py-4 rounded-2xl text-base sm:text-lg transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+                {t('viewRanking')}
+              </button>
+            </div>
+
+            {/* Ranking Table */}
+            {showRanking && selectedImage && (
+              <div className="w-full max-w-lg glass-card p-6 animate-fade-in">
+                <h3 className="text-lg font-bold text-zinc-100 mb-1">{t('ranking')}</h3>
+                <p className="text-xs text-zinc-500 mb-4">
+                  {t(selectedImage.labelKey)} · {gridSize}x{gridSize}
+                </p>
+                {rankingLoading ? (
+                  <p className="text-zinc-500 text-sm text-center py-4">Loading...</p>
+                ) : rankings.length === 0 ? (
+                  <p className="text-zinc-500 text-sm">{t('noRankings')}</p>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b border-white/[0.06]">
+                          <th className="py-2 px-3 text-left text-zinc-500 font-medium">{t('rank')}</th>
+                          <th className="py-2 px-3 text-left text-zinc-500 font-medium">{t('player')}</th>
+                          <th className="py-2 px-3 text-right text-zinc-500 font-medium">{t('yourTime')}</th>
+                          <th className="py-2 px-3 text-right text-zinc-500 font-medium">{t('yourMoves')}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rankings.map((entry, i) => (
+                          <tr
+                            key={i}
+                            className={`border-b border-white/[0.03] ${i < 3 ? 'text-zinc-100' : 'text-zinc-400'}`}
+                          >
+                            <td className="py-2.5 px-3 text-left">
+                              {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : i + 1}
+                            </td>
+                            <td className="py-2.5 px-3 text-left font-medium">{entry.nickname}</td>
+                            <td className="py-2.5 px-3 text-right font-mono text-violet-400">{formatTime(entry.time)}</td>
+                            <td className="py-2.5 px-3 text-right font-mono">{entry.moves}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -190,7 +275,6 @@ import {
   loadAndResizeImage,
   splitImage,
   generateSolvableSlidePuzzle,
-  formatTime,
 } from '@/lib/puzzle-engine';
 
 interface ChallengeSlidePuzzleProps {

@@ -51,6 +51,42 @@ export async function GET(request: NextRequest) {
   }
 }
 
+export async function DELETE(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const imageId = searchParams.get('imageId');
+  const gridSize = Number(searchParams.get('gridSize'));
+  const nickname = searchParams.get('nickname');
+
+  if (!imageId || !gridSize) {
+    return NextResponse.json({ error: 'Missing imageId or gridSize' }, { status: 400 });
+  }
+
+  const key = makeKey(imageId, gridSize);
+
+  try {
+    const kv = await getKV();
+    if (kv) {
+      if (nickname) {
+        const existing = (await kv.get<LeaderboardEntry[]>(key)) || [];
+        const filtered = existing.filter(e => e.nickname !== nickname);
+        await kv.set(key, filtered);
+      } else {
+        await kv.del(key);
+      }
+      return NextResponse.json({ success: true });
+    }
+    if (nickname) {
+      const existing = memoryStore.get(key) || [];
+      memoryStore.set(key, existing.filter(e => e.nickname !== nickname));
+    } else {
+      memoryStore.delete(key);
+    }
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();

@@ -183,7 +183,8 @@
     "backToSelect": "Back to Selection",
     "serverError": "Cannot connect to ranking server",
     "scoreSubmitted": "Score submitted!",
-    "nicknameError": "Nickname must be 2-12 characters"
+    "nicknameError": "Nickname must be 2-12 characters",
+    "viewRanking": "View Rankings"
   },
   "Common": {
     "loading": "Loading...",

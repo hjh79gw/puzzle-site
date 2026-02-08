@@ -183,7 +183,8 @@
     "backToSelect": "이미지 선택으로",
     "serverError": "랭킹 서버에 연결할 수 없습니다",
     "scoreSubmitted": "점수가 등록되었습니다!",
-    "nicknameError": "닉네임은 2~12자로 입력해주세요"
+    "nicknameError": "닉네임은 2~12자로 입력해주세요",
+    "viewRanking": "랭킹 보기"
   },
   "Common": {
     "loading": "로딩 중...",
