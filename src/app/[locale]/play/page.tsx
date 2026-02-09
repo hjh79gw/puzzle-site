@@ -10,16 +10,25 @@ import AdBanner from '@/components/AdBanner';
 
 type GameState = 'upload' | 'config' | 'playing';
 
+const ASPECT_RATIO_THRESHOLD = 2.0;
+
 export default function PlayPage() {
   const t = useTranslations('Play');
   const [gameState, setGameState] = useState<GameState>('upload');
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [puzzleType, setPuzzleType] = useState<PuzzleType>('jigsaw');
   const [gridSize, setGridSize] = useState(4);
+  const [aspectWarning, setAspectWarning] = useState(false);
 
   const handleImageLoad = useCallback((url: string) => {
     if (imageSrc) URL.revokeObjectURL(imageSrc);
     setImageSrc(url);
+    const img = new Image();
+    img.onload = () => {
+      const ratio = Math.max(img.width, img.height) / Math.min(img.width, img.height);
+      setAspectWarning(ratio > ASPECT_RATIO_THRESHOLD);
+    };
+    img.src = url;
     setGameState('config');
   }, [imageSrc]);
 
@@ -88,6 +97,11 @@ export default function PlayPage() {
 
             {/* Settings panel - 2/5 width */}
             <div className="lg:col-span-2">
+              {aspectWarning && puzzleType === 'jigsaw' && (
+                <div className="mb-4 px-4 py-3 bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-xl text-sm leading-relaxed">
+                  {t('aspectRatioWarning')}
+                </div>
+              )}
               <div className="glass-card rounded-2xl p-6 sm:p-8 lg:sticky lg:top-24">
                 <PuzzleSelector
                   puzzleType={puzzleType}

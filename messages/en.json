@@ -72,6 +72,7 @@
     "uploadDesc": "Landscapes, singers, actors, pets — any photo can become a puzzle!",
     "uploadButton": "Choose Photo",
     "supportedFormats": "JPG, PNG, WebP (Max 10MB)",
+    "aspectRatioWarning": "This image has an extreme aspect ratio, which may make jigsaw puzzles harder to play. We recommend using a more square-shaped image.",
     "puzzleType": "Puzzle Type",
     "jigsaw": "Jigsaw Puzzle",
     "slide": "Slide Puzzle",
