@@ -1,7 +1,21 @@
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { blogPosts } from '@/data/blog-posts';
 import AdBanner from '@/components/AdBanner';
+
+const BASE_URL = 'https://puzzle-site-kappa.vercel.app';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const prefix = locale === 'ko' ? '' : `/${locale}`;
+  return {
+    title: locale === 'ko' ? '블로그' : 'Blog',
+    description: t('blogDesc'),
+    alternates: { canonical: `${BASE_URL}${prefix}/blog`, languages: { ko: `${BASE_URL}/blog`, en: `${BASE_URL}/en/blog` } },
+  };
+}
 
 export default async function BlogPage({
   params,

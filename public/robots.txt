@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://puzzleplay.vercel.app/sitemap.xml

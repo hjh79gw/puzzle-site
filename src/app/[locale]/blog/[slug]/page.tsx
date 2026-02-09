@@ -1,8 +1,11 @@
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Link } from '@/i18n/navigation';
 import { blogPosts } from '@/data/blog-posts';
 import { notFound } from 'next/navigation';
 import AdBanner from '@/components/AdBanner';
+
+const BASE_URL = 'https://puzzle-site-kappa.vercel.app';
 
 const postContentKeys: Record<string, { contentKeys: string[] }> = {
   'how-to-solve-slide-puzzle': {
@@ -26,6 +29,57 @@ export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
 }
 
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string; slug: string }>;
+}): Promise<Metadata> {
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'Blog' });
+  const post = blogPosts.find((p) => p.slug === slug);
+  if (!post) return {};
+
+  const title = t(post.titleKey);
+  const description = t(post.descKey);
+  const prefix = locale === 'ko' ? '' : `/${locale}`;
+  const url = `${BASE_URL}${prefix}/blog/${slug}`;
+
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: url,
+      languages: {
+        ko: `${BASE_URL}/blog/${slug}`,
+        en: `${BASE_URL}/en/blog/${slug}`,
+      },
+    },
+    openGraph: {
+      title,
+      description,
+      url,
+      type: 'article',
+      publishedTime: post.date,
+      locale: locale === 'ko' ? 'ko_KR' : 'en_US',
+    },
+  };
+}
+
+function BlogPostJsonLd({ locale, post, title, description }: { locale: string; post: { slug: string; date: string; category: string }; title: string; description: string }) {
+  const prefix = locale === 'ko' ? '' : `/${locale}`;
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    description,
+    datePublished: post.date,
+    url: `${BASE_URL}${prefix}/blog/${post.slug}`,
+    inLanguage: locale,
+    publisher: { '@type': 'Organization', name: 'PuzzlePlay' },
+  };
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }} />;
+}
+
 export default async function BlogPostPage({
   params,
 }: {
@@ -42,8 +96,12 @@ export default async function BlogPostPage({
     notFound();
   }
 
+  const postTitle = t(post.titleKey);
+  const postDesc = t(post.descKey);
+
   return (
     <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <BlogPostJsonLd locale={locale} post={post} title={postTitle} description={postDesc} />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-violet-600/10 blur-[150px] pointer-events-none overflow-hidden" />
 
       {/* Left vertical ad - desktop only */}

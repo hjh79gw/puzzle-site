@@ -1,7 +1,12 @@
 {
   "Metadata": {
     "title": "PuzzlePlay - Turn Your Photos into Puzzles",
-    "description": "Upload your favorite photos and enjoy jigsaw puzzles and slide puzzles. Free, no installation required, no photos stored."
+    "description": "Upload your favorite photos and enjoy jigsaw puzzles and slide puzzles. Free, no installation required, no photos stored.",
+    "playDesc": "Upload any photo and play jigsaw or slide puzzles online. Free, no sign-up needed.",
+    "challengeDesc": "Test your skills in time attack slide puzzle challenges. Compete for the fastest time on the leaderboard.",
+    "blogDesc": "Puzzle game tips, solving strategies, brain benefits, and fun stories about puzzles.",
+    "howToPlayDesc": "Learn how to play jigsaw puzzles and slide puzzles step by step.",
+    "aboutDesc": "PuzzlePlay is a free web puzzle game where you turn your own photos into jigsaw and slide puzzles."
   },
   "Navigation": {
     "home": "Home",

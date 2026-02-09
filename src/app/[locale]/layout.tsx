@@ -18,7 +18,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://puzzleplay.app';
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || 'https://puzzle-site-kappa.vercel.app';
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));

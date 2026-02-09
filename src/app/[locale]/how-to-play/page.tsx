@@ -1,4 +1,18 @@
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+
+const BASE_URL = 'https://puzzle-site-kappa.vercel.app';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+  const prefix = locale === 'ko' ? '' : `/${locale}`;
+  return {
+    title: locale === 'ko' ? '게임 방법' : 'How to Play',
+    description: t('howToPlayDesc'),
+    alternates: { canonical: `${BASE_URL}${prefix}/how-to-play`, languages: { ko: `${BASE_URL}/how-to-play`, en: `${BASE_URL}/en/how-to-play` } },
+  };
+}
 
 export default async function HowToPlayPage({
   params,
