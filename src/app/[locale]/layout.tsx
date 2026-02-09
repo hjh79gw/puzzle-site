@@ -83,6 +83,7 @@ export default async function LocaleLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#09090b" />
+        <meta name="google-site-verification" content="VGBKWBtbGVyrCRrLsC3B1ec26eGhGimbi4zEW-pDPuY" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="manifest" href="/manifest.json" />
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9131545638684988" crossOrigin="anonymous" />
