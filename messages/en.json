@@ -73,6 +73,7 @@
     "uploadButton": "Choose Photo",
     "supportedFormats": "JPG, PNG, WebP (Max 10MB)",
     "aspectRatioWarning": "This image has an extreme aspect ratio, which may make jigsaw puzzles harder to play. We recommend using a more square-shaped image.",
+    "uploadTip": "Photos with a similar width and height work best for puzzles",
     "puzzleType": "Puzzle Type",
     "jigsaw": "Jigsaw Puzzle",
     "slide": "Slide Puzzle",

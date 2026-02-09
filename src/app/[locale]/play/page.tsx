@@ -56,6 +56,12 @@ export default function PlayPage() {
               </p>
             </div>
             <ImageUploader onImageLoad={handleImageLoad} />
+            <p className="text-xs text-zinc-500 text-center mt-4 flex items-center justify-center gap-1.5">
+              <svg className="w-3.5 h-3.5 text-violet-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              {t('uploadTip')}
+            </p>
           </div>
           <AdBanner format="horizontal" className="w-full max-w-xl mx-auto mt-10" />
         </div>
