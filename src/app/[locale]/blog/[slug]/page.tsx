@@ -23,6 +23,9 @@ const postContentKeys: Record<string, { contentKeys: string[] }> = {
   'difficulty-guide': {
     contentKeys: ['post5Content1', 'post5Content2Title', 'post5Content2', 'post5Content3Title', 'post5Content3', 'post5Content4Title', 'post5Content4', 'post5Content5Title', 'post5Content5', 'post5Content6Title', 'post5Content6'],
   },
+  'choosing-puzzle-photos': {
+    contentKeys: ['post6Content1', 'post6Content2Title', 'post6Content2', 'post6Content3Title', 'post6Content3', 'post6Content4Title', 'post6Content4', 'post6Content5Title', 'post6Content5', 'post6Content6Title', 'post6Content6', 'post6Content7Title', 'post6Content7'],
+  },
 };
 
 export function generateStaticParams() {

@@ -42,4 +42,11 @@ export const blogPosts: BlogPost[] = [
     date: '2025-02-09',
     category: 'guide',
   },
+  {
+    slug: 'choosing-puzzle-photos',
+    titleKey: 'post6Title',
+    descKey: 'post6Desc',
+    date: '2025-02-12',
+    category: 'guide',
+  },
 ];

@@ -39,6 +39,11 @@ export default function Footer() {
                   {t('Navigation.about')}
                 </Link>
               </li>
+              <li>
+                <Link href="/leaderboard" className="text-sm text-zinc-500 hover:text-violet-400 transition-colors">
+                  {t('Navigation.leaderboard')}
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -2,6 +2,7 @@
 
 import { useTranslations } from 'next-intl';
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { Link } from '@/i18n/navigation';
 import ChallengeComplete from '@/components/ChallengeComplete';
 import AdBanner from '@/components/AdBanner';
 import { formatTime } from '@/lib/puzzle-engine';
@@ -16,11 +17,11 @@ interface ChallengeImage {
 }
 
 const CHALLENGE_IMAGES: ChallengeImage[] = [
-  { id: 'donuts', labelKey: 'donuts', src: '/challenge/colorful-donuts.jpg' },
-  { id: 'cat', labelKey: 'cat', src: '/challenge/cute-cat.jpg' },
-  { id: 'paint', labelKey: 'paint', src: '/challenge/colorful-wall.jpg' },
-  { id: 'sunflower', labelKey: 'sunflower', src: '/challenge/flowers.jpg' },
-  { id: 'macaron', labelKey: 'macaron', src: '/challenge/macarons.jpg' },
+  { id: 'sushi', labelKey: 'sushi', src: '/challenge/sushi-platter.jpg' },
+  { id: 'balloon', labelKey: 'balloon', src: '/challenge/hot-air-balloons.jpg' },
+  { id: 'village', labelKey: 'village', src: '/challenge/colorful-buildings.jpg' },
+  { id: 'coral', labelKey: 'coral', src: '/challenge/coral-reef.jpg' },
+  { id: 'candy', labelKey: 'candy', src: '/challenge/colorful-candy.jpg' },
 ];
 
 const GRID_OPTIONS: { size: GridSize; labelKey: string }[] = [
@@ -114,33 +115,40 @@ export default function ChallengePage() {
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
               {CHALLENGE_IMAGES.map((img) => (
-                <button
-                  key={img.id}
-                  onClick={() => setSelectedImage(img)}
-                  className={`group relative aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-200 ${
-                    selectedImage?.id === img.id
-                      ? 'border-violet-500 scale-[1.02] shadow-lg shadow-violet-500/20'
-                      : 'border-white/[0.06] hover:border-white/[0.15]'
-                  }`}
-                >
-                  <img
-                    src={img.src}
-                    alt={t(img.labelKey)}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
-                    <span className="text-sm font-medium text-white">
-                      {t(img.labelKey)}
-                    </span>
-                  </div>
-                  {selectedImage?.id === img.id && (
-                    <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-violet-500 flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                      </svg>
+                <div key={img.id} className="flex flex-col gap-1.5">
+                  <button
+                    onClick={() => setSelectedImage(img)}
+                    className={`group relative aspect-square rounded-2xl overflow-hidden border-2 transition-all duration-200 ${
+                      selectedImage?.id === img.id
+                        ? 'border-violet-500 scale-[1.02] shadow-lg shadow-violet-500/20'
+                        : 'border-white/[0.06] hover:border-white/[0.15]'
+                    }`}
+                  >
+                    <img
+                      src={img.src}
+                      alt={t(img.labelKey)}
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3">
+                      <span className="text-sm font-medium text-white">
+                        {t(img.labelKey)}
+                      </span>
                     </div>
-                  )}
-                </button>
+                    {selectedImage?.id === img.id && (
+                      <div className="absolute top-2 right-2 w-6 h-6 rounded-full bg-violet-500 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+                  <Link
+                    href={`/challenge/${img.id}` as '/challenge/donuts'}
+                    className="text-xs text-center text-violet-400 hover:text-violet-300 transition-colors"
+                  >
+                    {t('viewDetail')} →
+                  </Link>
+                </div>
               ))}
             </div>
           </div>

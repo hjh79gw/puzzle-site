@@ -14,6 +14,7 @@ export default function Header() {
     { href: '/' as const, label: t('home') },
     { href: '/play' as const, label: t('play') },
     { href: '/challenge' as const, label: t('challenge') },
+    { href: '/leaderboard' as const, label: t('leaderboard') },
     { href: '/how-to-play' as const, label: t('howToPlay') },
     { href: '/about' as const, label: t('about') },
     { href: '/blog' as const, label: t('blog') },
